@@ -1,0 +1,16 @@
+{
+  "background_color": "purple",
+  "description": "Shows random fox pictures. Hey, at least it isn't cats.",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "icon/fox-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "name": "InstallTest",
+  "short_name": "test",
+  "start_url": "http://localhost:8080/index.html",
+  "scope": "/"
+}

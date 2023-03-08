@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="manifest.json">
+  <script src="serviceworker.js"></script>
+  <script type="text/javascript" src="instascan.min.js"></script>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="all.css">
+  <script src="getCookie.js"></script>
+  <script src="script.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <img src="images/tri.png" alt="tri">
+
+  <button onclick=testajax()>test ajax</button>
+  <button onclick=fetchtest()>test fetch</button>
+  <button onclick=fetchpost()>test fetchpost</button>
+  <button onclick=cookiestest()>test cookies</button>
+  <input type="file" capture="user" accept="image/*" />
+  <input type="file" capture="environment" accept="image/*" />
+  <a href="/read.html">read頁面</a>
+
+  <button id='btnPhoneCall'><a href="" id='phonehref'>撥打電話:</a></button>
+  <input type="text" id='phoneNumber'>
+  <video id="preview"></video>
+  <script>
+    document.getElementById('btnPhoneCall').onclick = () => {//撥打電話
+      var phoneNumber = document.getElementById('phoneNumber').value;
+      document.getElementById('phonehref').setAttribute("href", "tel:" + phoneNumber);
+      alert(document.getElementById('phonehref').href);
+    }
+  </script>
+  <script>
+    function testajax() {
+      var xhr = new XMLHttpRequest();
+      xhr.onload = function () {
+        let response = JSON.parse(this.response);
+        console.log(response)
+      }
+      xhr.open('GET', 'https://localhost:44304/Dispatch/GetDispatchList?WorkId=1');
+      xhr.send();
+    }
+
+    async function fetchtest() {
+      //let data = [];
+      let workid = '1';
+      fetch(`https://localhost:44304/Dispatch/GeDispatchList?workid=${workid}`)
+        .then((response) => {//成功結果處理
+          return response.json();//把資料轉成JSON格式
+        })
+        .then(data => {
+          console.log(data);
+          const pkid0 = data[0].pkid;
+          console.log(pkid0);
+        })
+        .catch((error) => {//錯誤結果處理
+          alert(`Error: ${error}`);
+        })
+    }
+    async function cookiestest() {
+      let lkey = 'key1';
+      let lvalue = 'value1';
+      document.cookie = lkey + '=' + lvalue;
+      document.cookie = 'data1=1';
+      alert(getCookie('key1'));
+    }
+  </script>
+  <script type="text/javascript">
+    let scanner = new Instascan.Scanner({
+      video: document.getElementById('preview')
+    });
+  </script>
+</body>
+
+</html>
