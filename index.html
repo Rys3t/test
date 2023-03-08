@@ -33,15 +33,15 @@
   <input type="text" id='phoneNumber'>
   <div id="reader" width="600px"> </div>
   <script type="text/javascript">
-    function qrcode() {
+    async function qrcode() {
       Html5Qrcode.getCameras().then(devices => {
         if (devices && devices.length) {
           var cameraId = devices[0].id;
           const html5QrCode = new Html5Qrcode("reader");
           const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             alert(decodedText);
-            let sn = 
-        };
+
+          };
           const config = {
             fps: 25,
             qrbox: {
@@ -58,7 +58,6 @@
       });
     }
     // This method will trigger user permissions
-
   </script>
   <script>
     document.getElementById('btnPhoneCall').onclick = () => {//撥打電話
