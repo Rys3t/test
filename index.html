@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="all.css">
   <script src="getCookie.js"></script>
   <script src="script.js"></script>
+  <script src="html5-qrcode.min.js"></script>
   <title>Document</title>
 </head>
 
@@ -24,10 +25,37 @@
   <button onclick=cookiestest()>test cookies</button>
   <input type="file" capture="user" accept="image/*" />
   <input type="file" capture="environment" accept="image/*" />
+  <video id="preview"></video>
   <a href="/read.html">read頁面</a>
 
   <button id='btnPhoneCall'><a href="" id='phonehref'>撥打電話:</a></button>
   <input type="text" id='phoneNumber'>
+  <div id="reader" width="600px"> </div>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script type="text/javascript">
+    // This method will trigger user permissions
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        var cameraId = devices[0].id;
+        const html5QrCode = new Html5Qrcode("reader");
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+          alert(decodedText);// 這裡已經可以正確彈出掃描結果，但點按無法跳轉
+        };
+        const config = {
+          fps: 25,
+          qrbox: {
+            width: 350,
+            height: 350
+          }
+        };
+        html5QrCode.start({
+          facingMode: "environment"
+        }, config, qrCodeSuccessCallback);
+      }
+    }).catch(err => {
+      // handle err
+    });
+  </script>
   <video id="preview"></video>
   <script>
     document.getElementById('btnPhoneCall').onclick = () => {//撥打電話
@@ -71,9 +99,33 @@
       alert(getCookie('key1'));
     }
   </script>
+
+
   <script type="text/javascript">
     let scanner = new Instascan.Scanner({
       video: document.getElementById('preview')
+    });
+    // 開啟一個新的掃描
+    // 宣告變數scanner，在html<video>標籤id為preview的地方開啟相機預覽。
+    // Notice:這邊注意一定要用<video>的標籤才能使用，詳情請看他的github API的部分解釋。
+
+    scanner.addListener('scan', function (content) {
+      console.log(content);
+    });
+    //開始偵聽掃描事件，若有偵聽到印出內容。
+
+    Instascan.Camera.getCameras().then(function (cameras) {
+      //取得設備的相機數目
+      if (cameras.length > 0) {
+        ///若設備相機數目大於0 則先開啟第0個相機(程式的世界是從第零個開始的)
+        scanner.start(cameras[0]);
+      } else {
+        //若設備沒有相機數量則顯示"No cameras found";
+        //這裡自行判斷要寫什麼
+        console.error('No cameras found.');
+      }
+    }).catch(function (e) {
+      console.error(e);
     });
   </script>
 </body>
