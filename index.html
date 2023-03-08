@@ -36,7 +36,7 @@
     async function qrcode() {
       Html5Qrcode.getCameras().then(devices => {
         if (devices && devices.length) {
-          var cameraId = devices[0].id;
+          //var cameraId = devices[0].id;
           const html5QrCode = new Html5Qrcode("reader");
           const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             alert(decodedText);
