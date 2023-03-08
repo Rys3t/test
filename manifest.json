@@ -11,6 +11,6 @@
   ],
   "name": "InstallTest",
   "short_name": "test",
-  "start_url": "http://localhost:8080/index.html",
+  "start_url": "https://rys3t.github.io/test/",
   "scope": "/"
 }
