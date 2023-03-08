@@ -50,7 +50,9 @@
             }
           };
           html5QrCode.start({
-            facingMode: "environment"
+            facingMode: {
+              exact: "environment"
+            }
           }, config, qrCodeSuccessCallback);
         }
       }).catch(err => {
@@ -80,7 +82,7 @@
     async function fetchtest() {
       //let data = [];
       let workid = '1';
-      fetch(`https://localhost:44304/Dispatch/GeDispatchList?workid=${workid}`)
+      fetch(`https://localhost:44304/Dispatch/GetDispatchList?WorkId=${workid}`)
         .then((response) => {//成功結果處理
           return response.json();//把資料轉成JSON格式
         })
@@ -88,6 +90,7 @@
           console.log(data);
           const pkid0 = data[0].pkid;
           console.log(pkid0);
+          document.cookie = 'test=' + data;
         })
         .catch((error) => {//錯誤結果處理
           alert(`Error: ${error}`);
@@ -98,7 +101,7 @@
       let lvalue = 'value1';
       document.cookie = lkey + '=' + lvalue;
       document.cookie = 'data1=1';
-      alert(getCookie('key1'));
+      alert(getCookie('test'));
     }
   </script>
 </body>
