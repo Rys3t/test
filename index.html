@@ -40,7 +40,7 @@
           const html5QrCode = new Html5Qrcode("reader");
           const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             alert(decodedText);
-            Html5Qrcode.stop();
+            html5QrCode.stop();
           };
           const config = {
             fps: 25,
