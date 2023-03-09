@@ -42,18 +42,8 @@
             alert(decodedText);
             html5QrCode.stop().then((ignore) => { }).catch((err) => { });
           };
-          const config = {
-            fps: 25,
-            qrbox: {
-              width: 350,
-              height: 350
-            }
-          };
-          html5QrCode.start({
-            facingMode: {
-              exact: "user"
-            }
-          }, config, qrCodeSuccessCallback);
+          html5QrCode.start(
+            { facingMode: "environment" }, { fps: 25, qrbox: { width: 350, height: 350 } }, qrCodeSuccessCallback);
         }
       }).catch(err => {
         alert('qrcode錯誤:' + err);
