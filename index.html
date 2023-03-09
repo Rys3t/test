@@ -45,69 +45,21 @@
       }
       Html5Qrcode.getCameras().then(devices => {
         //if (devices && devices.length) {
-        //var cameraId = devices[0].id;
         const lastDevice = devices[devices.length - 1];
         alert(lastDevice.id);
         console.log(devices);
         const html5QrCode = new Html5Qrcode("reader");
         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-
           alert(decodedText);
           html5QrCode.stop().then((ignore) => { }).catch((err) => { });
         };
         html5QrCode.start(
-          //{ facingMode: "environment" }, 
           lastDevice.id,
-          { fps: 25, qrbox: { width: 350, height: 350 } }, qrCodeSuccessCallback);
-        //}
-        //}).catch(err => {
-        //alert('qrcode錯誤:' + err);
+          { fps: 25, qrbox: { width: 300, height: 300 } }, qrCodeSuccessCallback);
+      }
+      ).catch(err => {
+        alert('qrcode錯誤:' + err);
       });
-    }
-    function qrcode() {
-      let html5QrCode = '';
-      let currentCameraId = '';
-      const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-        alert(decodedText);
-        html5QrCode.stop().then((ignore) => { }).catch((err) => { });
-      };
-
-      async function startScanning(cameraId) {
-        html5QrCode = new Html5Qrcode("reader");
-        try {
-          await html5QrCode.start({ deviceId: cameraId }, { fps: 25, qrbox: { width: 350, height: 350 } }, qrCodeSuccessCallback);
-          currentCameraId = cameraId;
-        } catch (err) {
-          alert('Error starting camera: ' + err.message);
-        }
-      }
-
-
-
-      // Start with the default camera
-      startScanning('');
-    }
-    async function switchCamera() {
-      const devices = await Html5Qrcode.getCameras();
-      if (!devices || !devices.length) {
-        alert('No cameras found');
-        return;
-      }
-
-      let newCameraId = '';
-      if (devices.length > 1) {
-        // Switch to the other camera
-        newCameraId = (currentCameraId === devices[0].id) ? devices[1].id : devices[0].id;
-      } else {
-        alert('Only one camera found');
-        return;
-      }
-
-      // Stop the current scan
-      await html5QrCode.stop();
-
-      // Start the new scan
-      await startScanning(newCameraId);
     }
 
   </script>
