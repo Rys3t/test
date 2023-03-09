@@ -40,7 +40,7 @@
           const html5QrCode = new Html5Qrcode("reader");
           const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             alert(decodedText);
-            html5QrCode.stop();
+            html5QrCode.stop().then((ignore) => { }).catch((err) => { });
           };
           const config = {
             fps: 25,
@@ -51,12 +51,12 @@
           };
           html5QrCode.start({
             facingMode: {
-              exact: "environment"
+              exact: "user"
             }
           }, config, qrCodeSuccessCallback);
         }
       }).catch(err => {
-        alert('qrcode錯誤');
+        alert('qrcode錯誤:' + err);
       });
     }
     // This method will trigger user permissions
