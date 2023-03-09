@@ -18,7 +18,7 @@
 
 <body>
   <img src="images/tri.png" alt="tri">
-
+  <div id="reader" width="600px"> </div>
   <button onclick=testajax()>test ajax</button>
   <button onclick=fetchtest()>test fetch</button>
   <button onclick=fetchpost()>test fetchpost</button>
@@ -33,8 +33,6 @@
 
   <button id='btnPhoneCall'><a href="" id='phonehref'>撥打電話:</a></button>
   <input type="text" id='phoneNumber'>
-  <button id="switch-camera-btn" onclick="switchCamera()">Switch Camera</button>
-  <div id="reader" width="600px"> </div>
   <script type="text/javascript">
     async function qrcode_1() {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -51,7 +49,11 @@
         const html5QrCode = new Html5Qrcode("reader");
         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
           alert(decodedText);
-          html5QrCode.stop().then((ignore) => { }).catch((err) => { });
+          html5QrCode.stop()
+            .then((ignore) => { })
+            .catch((err) => {
+              alert('qrcode錯誤:' + err);
+            });
         };
         html5QrCode.start(
           lastDevice.id,
@@ -82,7 +84,6 @@
     }
 
     async function fetchtest() {
-      //let data = [];
       let workid = '1';
       fetch(`https://localhost:44304/Dispatch/GetDispatchList?WorkId=${workid}`)
         .then((response) => {//成功結果處理
