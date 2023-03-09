@@ -23,7 +23,9 @@
   <button onclick=fetchtest()>test fetch</button>
   <button onclick=fetchpost()>test fetchpost</button>
   <button onclick=cookiestest()>test cookies</button>
-  <button onclick=qrcode()>scan qrcode</button>
+
+  <button onclick=qrcode_1()>scan qrcode</button>
+
   <input type="file" capture="user" accept="image/*" />
   <input type="file" capture="environment" accept="image/*" />
   <video id="preview"></video>
@@ -31,25 +33,83 @@
 
   <button id='btnPhoneCall'><a href="" id='phonehref'>撥打電話:</a></button>
   <input type="text" id='phoneNumber'>
+  <button id="switch-camera-btn" onclick="switchCamera()">Switch Camera</button>
   <div id="reader" width="600px"> </div>
   <script type="text/javascript">
-    async function qrcode() {
-      //Html5Qrcode.getCameras().then(devices => {
+    async function qrcode_1() {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (isIOS) {
+        console.log('This is an iOS device.');
+      } else {
+        console.log('This is not an iOS device.');
+      }
+      Html5Qrcode.getCameras().then(devices => {
         //if (devices && devices.length) {
-          //var cameraId = devices[0].id;
-          const html5QrCode = new Html5Qrcode("reader");
-          const qrCodeSuccessCallback = (decodedText, decodedResult) => {
-            alert(decodedText);
-            html5QrCode.stop().then((ignore) => { }).catch((err) => { });
-          };
-          html5QrCode.start(
-            { facingMode: "environment" }, { fps: 25, qrbox: { width: 350, height: 350 } }, qrCodeSuccessCallback);
+        //var cameraId = devices[0].id;
+        const lastDevice = devices[devices.length - 1];
+        alert(lastDevice.id);
+        console.log(devices);
+        const html5QrCode = new Html5Qrcode("reader");
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+
+          alert(decodedText);
+          html5QrCode.stop().then((ignore) => { }).catch((err) => { });
+        };
+        html5QrCode.start(
+          //{ facingMode: "environment" }, 
+          lastDevice.id,
+          { fps: 25, qrbox: { width: 350, height: 350 } }, qrCodeSuccessCallback);
         //}
-      //}).catch(err => {
+        //}).catch(err => {
         //alert('qrcode錯誤:' + err);
-      //});
+      });
     }
-    // This method will trigger user permissions
+    function qrcode() {
+      let html5QrCode = '';
+      let currentCameraId = '';
+      const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+        alert(decodedText);
+        html5QrCode.stop().then((ignore) => { }).catch((err) => { });
+      };
+
+      async function startScanning(cameraId) {
+        html5QrCode = new Html5Qrcode("reader");
+        try {
+          await html5QrCode.start({ deviceId: cameraId }, { fps: 25, qrbox: { width: 350, height: 350 } }, qrCodeSuccessCallback);
+          currentCameraId = cameraId;
+        } catch (err) {
+          alert('Error starting camera: ' + err.message);
+        }
+      }
+
+
+
+      // Start with the default camera
+      startScanning('');
+    }
+    async function switchCamera() {
+      const devices = await Html5Qrcode.getCameras();
+      if (!devices || !devices.length) {
+        alert('No cameras found');
+        return;
+      }
+
+      let newCameraId = '';
+      if (devices.length > 1) {
+        // Switch to the other camera
+        newCameraId = (currentCameraId === devices[0].id) ? devices[1].id : devices[0].id;
+      } else {
+        alert('Only one camera found');
+        return;
+      }
+
+      // Stop the current scan
+      await html5QrCode.stop();
+
+      // Start the new scan
+      await startScanning(newCameraId);
+    }
+
   </script>
   <script>
     document.getElementById('btnPhoneCall').onclick = () => {//撥打電話
