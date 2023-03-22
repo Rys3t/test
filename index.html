@@ -10,8 +10,7 @@
   <script type="text/javascript" src="instascan.min.js"></script>
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="all.css">
-  <script src="getCookie.js"></script>
-  <script src="script.js"></script>
+  <script src="all.js"></script>
   <script src="html5-qrcode.min.js"></script>
   <title>Document</title>
 </head>
@@ -24,17 +23,53 @@
   <button onclick=fetchpost()>test fetchpost</button>
   <button onclick=cookiestest()>test cookies</button>
 
-  <button onclick=qrcode_1()>scan qrcode</button>
+  <button onclick=scanQRcode()>scan qrcode</button>
 
   <input type="file" capture="user" accept="image/*" />
   <input type="file" capture="environment" accept="image/*" />
   <video id="preview"></video>
-  <a href="/read.html">read頁面</a>
+  <table id="myTable">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Savings</th>
+      </tr>
+    </thead>
+    <tbody id="bd">
+      <tr>
+        <td>January</td>
+        <td>$100</td>
+      </tr>
+      <tr>
+        <td>February</td>
+        <td>$80</td>
+      </tr>
+      <tr>
+        <td>January</td>
+        <td>$100</td>
+      </tr>
+      <tr>
+        <td>February</td>
+        <td>$80</td>
+      </tr>
+      <tr>
+        <td>January</td>
+        <td>$100</td>
+      </tr>
+      <tr>
+        <td>February</td>
+        <td>$80</td>
+      </tr>
+    </tbody>
+  </table>
 
   <button id='btnPhoneCall'><a href="" id='phonehref'>撥打電話:</a></button>
   <input type="text" id='phoneNumber'>
   <script type="text/javascript">
-    async function qrcode_1() {
+    window.onload = () => {
+      document.getElementById("bd").style.overflow = 'auto';
+    }
+    function scanQRcode() {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
       if (isIOS) {
         console.log('This is an iOS device.');
@@ -60,10 +95,9 @@
           { fps: 25, qrbox: { width: 300, height: 300 } }, qrCodeSuccessCallback);
       }
       ).catch(err => {
-        alert('qrcode錯誤:' + err);
+        alert('無法連結相機:' + err);
       });
     }
-
   </script>
   <script>
     document.getElementById('btnPhoneCall').onclick = () => {//撥打電話

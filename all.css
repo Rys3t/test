@@ -31,3 +31,12 @@ html > * {
     /*debug*/
      outline: 1px solid black; 
 }
+thead,
+tbody {
+  display: block;
+}
+
+tbody {
+  max-height: 100px;
+  width: 200px;
+}
