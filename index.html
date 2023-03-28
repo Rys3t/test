@@ -62,10 +62,20 @@
       </tr>
     </tbody>
   </table>
-
+  <form>
+    <label for="date-picker">選擇日期:</label>
+    <input type="date" id="date-picker">
+    <br><br>
+    <label for="selected-date">選擇的日期:</label>
+    <input type="text" id="selected-date" readonly>
+  </form>
   <button id='btnPhoneCall'><a href="" id='phonehref'>撥打電話:</a></button>
   <input type="text" id='phoneNumber'>
   <script type="text/javascript">
+    document.getElementById("date-picker").addEventListener("change", function () {
+      let selectedDate = this.value;
+      document.getElementById("selected-date").value = selectedDate;
+    });
     window.onload = () => {
       document.getElementById("bd").style.overflow = 'auto';
     }

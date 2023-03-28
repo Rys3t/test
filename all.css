@@ -33,10 +33,11 @@ html > * {
 }
 thead,
 tbody {
-  display: block;
+    max-height: 100px;
+    display: block;
 }
 
 tbody {
-  max-height: 100px;
+  
   width: 200px;
 }
